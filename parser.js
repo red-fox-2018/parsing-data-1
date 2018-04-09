@@ -1,5 +1,7 @@
 "use strict"
 
+const fs = require("fs");
+
 /**
  * @author: Iswanul Umam - Red Fox
  */
@@ -27,7 +29,6 @@ class PersonParser {
   }
 
   readFile() {
-    const fs = require("fs");
     let line = fs.readFileSync(this._file, 'utf8');
     let rows = line.split("\n")
 
@@ -52,12 +53,17 @@ class PersonParser {
     // return this.length;
   }
 
-  addPerson(person) {
+  addPerson(firstName, lastName, email, phone, date) {
+    let id = this._getLastId();
+    let person = new Person(id, firstName, lastName, email, phone, date);
     this._people.push(person);
-    // console.log(this._people);
   }
+
+  _getLastId() {
+    return Number(this._people[this.people.length - 2].id) + 1;
+  }
+
   save() {
-    let fs = require('fs');
     let line = ''
 
     for (let i = 0; i < this._people.length; i++) {
@@ -74,11 +80,11 @@ class PersonParser {
   }
 }
 
+// driver code ---------------------------------------------------------------------------------
+
 let parser = new PersonParser('people.csv')
 
-let newPerson = new Person(201, 'Umam', 'Iswanul', 'umam@email.com', '123-4567-98', new Date().toISOString());
-// console.log(person);
-parser.addPerson(newPerson);
+parser.addPerson('Umam', 'Iswanul', 'umam@email.com', '123-4567-98', new Date().toISOString());
 
 parser.save();
 
