@@ -20,14 +20,16 @@ class PersonParser {
     this._file = file
     this._people = []
   }
-
-  get people() {
+  readFile(){
     const peopleRawData = fs.readFileSync(`./${this._file}`,'UTF8','\n').trim()
     let rawSplited = peopleRawData.split('\n')
     for (let i = 0; i < rawSplited.length; i++) {
         this._people.push(rawSplited[i].split(','))
     }
     return this._people
+  }
+  get people() {
+        return{size:this._people.length-1}
   }
 
   addPerson(person) {
@@ -50,11 +52,12 @@ class PersonParser {
 }
 
 let parser = new PersonParser('people.csv')
-parser.people
+parser.readFile()
+console.log(parser._people)
 let id = +parser._people[parser._people.length-1][0] +1
 parser.addPerson(new Person(String(id),'John','Abraham','john@gmail.com','1-123213-4221',new Date()))
 id = +parser._people[parser._people.length-1][0] +1
 parser.addPerson(new Person(String(id),'Scarlett','Johansson','johansson@gmail.com','1-123213-4221',new Date()))
 console.log(parser._people)
 parser.save(parser._people)
-console.log(`There are ${parser._people.length-1} people in the file '${parser._file}'.`)
+console.log(`There are ${parser.people.size} people in the file '${parser._file}'.`)
