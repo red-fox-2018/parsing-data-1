@@ -63,7 +63,7 @@ class PersonParser {
   save() {
     let result = [];
 
-    this._people.forEach((person, index) => {
+    this._people.forEach(person => {
       result.push([person.id, person.first_name, person.last_name, person.email, person.phone, person.created_at]);
     });
 
